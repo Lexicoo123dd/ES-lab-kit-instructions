@@ -69,3 +69,19 @@ sudo openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c "adapter speed 5
 (Replace PROGRAM_NAME.elf with e.g. `LabKitTest.elf` from the building step).
 
 Example project should now be running on the board if everything was done correctly.
+
+## Viewing Output
+If your project in anyway outputs text to the terminal you're going to want to view that text somehow. I have used [GNU screen](https://wiki.archlinux.org/title/GNU_Screen) with much success.
+
+`sudo pacman -S screen`
+
+After connecting the board with a USB, find the right device to display output of. Do this with
+```
+sudo dmesg | grep tty*
+```
+and it should display something like `...: ttyACM0: USB ACM device`. In this case ttyACM0 is our device, the RP2350 board just connected. This should be the default, but if you disconnect the board and reconnect it, it might become e.g. ttyACM1 etc. instead.
+
+View the output of that device with
+```
+sudo screen /dev/ttyACM0 115200
+```
