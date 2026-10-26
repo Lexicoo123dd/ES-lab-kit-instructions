@@ -6,8 +6,8 @@ The board is at the very least used in the courses IL2206, IL2212, and IL2235.
 
 [Repo for the Lab Kit.](https://gits-15.sys.kth.se/mabecker/ES-Lab-Kit)
 
-## Board Setup (without vscode (ew)!!!)
-**Setup done on arch.** Should be very similar on other linux distros, just different command for installing the dependencies of course.
+## Board Setup (without vscode)
+**Setup done on arch**, but there are also instructions for apt (debian/ubuntu). Should be very similar on other linux distros, just different command for installing the dependencies of course.
 
 ### Flashing Debugger Firmware (Only done once!)
 * Download `debugprobe_on_pico2.uf2` from [here](https://github.com/raspberrypi/debugprobe/releases), or using this [direct link](https://github.com/raspberrypi/debugprobe/releases/download/debugprobe-v2.2.3/debugprobe_on_pico2.uf2).
@@ -18,16 +18,18 @@ The board is at the very least used in the courses IL2206, IL2212, and IL2235.
 * Now the board is ready to be used.
 
 ### Dependencies
+Arch:
 `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-newlib`
+Debian/Ubuntu:
+`sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi`
 
 Might require other dependencies, but those should be very clear if it tells you that a command doesn't exist. Obvious ones are git, make, and cmake.
 
 ### pico-sdk
 ```
 git clone git@github.com:raspberrypi/pico-sdk.git
-export PICO_SDK_PATH=~/path/to/pico-sdk
 ```
-Might have to add the export line to `~/.bashrc` instead if it's temporary. Alternatively, perform the export command inside each project. It will tell you during the `cmake ..` step if you need to export a path for `PICO_SDK_PATH`.
+Add `export PICO_SDK_PATH=~/path/to/pico-sdk` to `~/.bashrc`. Alternatively, perform the export command inside each project. It will tell you during the `cmake ..` step if you need to export a path for `PICO_SDK_PATH`.
 
 ### openocd
 ```
@@ -73,13 +75,13 @@ Example project should now be running on the board if everything was done correc
 ## Viewing Output
 If your project in anyway outputs text to the terminal you're going to want to view that text somehow. I have used [GNU screen](https://wiki.archlinux.org/title/GNU_Screen) with much success.
 
-`sudo pacman -S screen`
+`sudo pacman -S screen` or `sudo apt install screen`
 
 After connecting the board with a USB, find the right device to display output of. Do this with
 ```
 sudo dmesg | grep tty*
 ```
-and it should display something like `...: ttyACM0: USB ACM device`. In this case ttyACM0 is our device, the RP2350 board just connected. This should be the default, but if you disconnect the board and reconnect it, it might become e.g. ttyACM1 etc. instead.
+and it should display something like `...: ttyACM0: USB ACM device`. In this case ttyACM0 is our device the RP2350 board just connected. This should be the default, but if you disconnect the board and reconnect it, it might become e.g. ttyACM1 etc. instead.
 
 View the output of that device with
 ```
